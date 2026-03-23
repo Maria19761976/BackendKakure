@@ -12,7 +12,6 @@ public class
 Main {
 
     public static void main(String[] args) {
-
         MovieController controller = new MovieController();
         MovieView view = new MovieView();
         Scanner scanner = new Scanner(System.in);
@@ -26,50 +25,50 @@ Main {
             try {
                 option = Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("⚠️  Por favor introduce un número válido.");
+                System.out.println("⚠️  Please enter a valid number.");
                 continue;
             }
 
             switch (option) {
                 case 1:
-                    // CREATE — Añadir película
-                    System.out.print("Título: ");
+                    // CREATE — Add movie
+                    System.out.print("Title: ");
                     String title = scanner.nextLine();
 
-                    System.out.print("Año: ");
+                    System.out.print("Year: ");
                     int year = Integer.parseInt(scanner.nextLine());
 
-                    System.out.print("Duración (min): ");
+                    System.out.print("Duration (min): ");
                     int duration = Integer.parseInt(scanner.nextLine());
 
-                    System.out.print("Género: ");
+                    System.out.print("Genre: ");
                     String genre = scanner.nextLine();
 
-                    System.out.print("Estudio: ");
+                    System.out.print("Studio: ");
                     String studio = scanner.nextLine();
 
-                    System.out.print("Rating (ej: 8.5): ");
+                    System.out.print("Rating (e.g. 8.5): ");
                     double rating = Double.parseDouble(scanner.nextLine());
 
-                    System.out.print("URL del poster: ");
+                    System.out.print("Poster URL: ");
                     String poster = scanner.nextLine();
 
-                    System.out.print("Sinopsis: ");
+                    System.out.print("Synopsis: ");
                     String synopsis = scanner.nextLine();
 
                     controller.addMovie(title, year, duration, genre, studio, rating, poster, synopsis);
-                    view.printSuccessMessage("Película '" + title + "' añadida correctamente.");
+                    view.printSuccessMessage("Movie '" + title + "' added successfully.");
                     break;
 
                 case 2:
-                    // READ — Ver todas las películas
+                    // READ — List all movies
                     List<Movie> movies = controller.getAllMovies();
                     view.printAllMovies(movies);
                     break;
 
                 case 3:
-                    // READ by ID — Buscar por ID
-                    System.out.print("Introduce el ID de la película: ");
+                    // READ by ID — Search by ID
+                    System.out.print("Enter movie ID: ");
                     int id = Integer.parseInt(scanner.nextLine());
                     Movie found = controller.getMovieById(id);
                     if (found != null) {
@@ -80,11 +79,11 @@ Main {
                     break;
 
                 case 0:
-                    System.out.println("👋 ¡Hasta luego! Cerrando KakureAnime...");
+                    System.out.println("👋 Goodbye! Closing KakureAnime...");
                     break;
 
                 default:
-                    System.out.println("⚠️  Opción no válida.");
+                    System.out.println("⚠️  Invalid option.");
             }
         }
 
