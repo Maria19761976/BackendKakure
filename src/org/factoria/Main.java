@@ -22,6 +22,7 @@ Main {
         while (option != 0) {
             view.printMenu();
 
+
             try {
                 option = Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
