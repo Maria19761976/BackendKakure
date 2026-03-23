@@ -12,10 +12,10 @@ public class Movie {
     private String poster;
     private String synopsis;
 
-    // Constructor vacío
+    // Empty constructor
     public Movie() {}
 
-    // Constructor sin id (para crear)
+    // Constructor without id (for creation)
     public Movie(String title, int year, int duration, String genre,
                  String studio, double rating, String poster, String synopsis) {
         this.title = title;
@@ -28,7 +28,7 @@ public class Movie {
         this.synopsis = synopsis;
     }
 
-    // Constructor completo
+    // Full constructor
     public Movie(int id, String title, int year, int duration, String genre,
                  String studio, double rating, String poster, String synopsis) {
         this.id = id;
@@ -42,7 +42,7 @@ public class Movie {
         this.synopsis = synopsis;
     }
 
-    // Getters y Setters
+    // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

@@ -30,9 +30,9 @@ public class MovieRepositoryImpl implements MovieRepository {
             stmt.setString(7, movie.getPoster());
             stmt.setString(8, movie.getSynopsis());
             stmt.executeUpdate();
-            System.out.println("✅ Película guardada en la base de datos.");
+            System.out.println("✅ Movie saved to the database.");
         } catch (SQLException e) {
-            System.err.println("❌ Error al insertar película: " + e.getMessage());
+            System.err.println("❌ Error inserting movie: " + e.getMessage());
         }
     }
 
@@ -46,7 +46,7 @@ public class MovieRepositoryImpl implements MovieRepository {
                 movies.add(mapResultSetToMovie(rs));
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error al leer películas: " + e.getMessage());
+            System.err.println("❌ Error reading movies: " + e.getMessage());
         }
         return movies;
     }
@@ -61,7 +61,7 @@ public class MovieRepositoryImpl implements MovieRepository {
                 return mapResultSetToMovie(rs);
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error al buscar película por ID: " + e.getMessage());
+            System.err.println("❌ Error searching movie by ID: " + e.getMessage());
         }
         return null;
     }
