@@ -8,8 +8,7 @@ public class DatabaseConnection {
 
     private static final String URL      = "jdbc:mysql://localhost:3306/kakureanime";
     private static final String USER     = "root";
-    private static final String PASSWORD = "";  // Cambia si tienes contraseña
-
+    private static final String PASSWORD = "root";
     private static Connection connection = null;
 
     private DatabaseConnection() {}
