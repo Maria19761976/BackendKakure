@@ -30,6 +30,9 @@ CREATE TABLE movies (
 );
 ```
 
+<img width="1029" height="611" alt="image" src="https://github.com/user-attachments/assets/70001422-bbac-430a-8bda-a0c3048daf73" />
+
+
 The application connects with user `root` and password `root`. Change these in `DatabaseConnection.java` if needed.
 
 ## Run
