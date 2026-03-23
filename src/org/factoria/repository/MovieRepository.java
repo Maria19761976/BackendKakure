@@ -1,4 +1,16 @@
 package org.factoria.repository;
 
-public class MovieRepository {
+import org.factoria.model.Movie;
+import java.util.List;
+
+public interface MovieRepository {
+
+
+    void create(Movie movie);
+
+
+    List<Movie> findAll();
+
+
+    Movie findById(int id);
 }
