@@ -1,56 +1,72 @@
+
 package org.factoria.repository;
 
 import org.factoria.config.DatabaseConnection;
 import org.factoria.model.Movie;
+
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovieRepositoryImpl implements MovieRepository {
 
-    public void create(Movie m) {
-        String sql = "INSERT INTO movies (title,year,duration,genre,studio,rating,poster,synopsis) VALUES (?,?,?,?,?,?,?,?)";
-        try {
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql);
-            ps.setString(1, m.getTitle());
-            ps.setInt(2, m.getYear());
-            ps.setInt(3, m.getDuration());
-            ps.setString(4, m.getGenre());
-            ps.setString(5, m.getStudio());
-            ps.setDouble(6, m.getRating());
-            ps.setString(7, m.getPoster());
-            ps.setString(8, m.getSynopsis());
-            ps.executeUpdate();
-            System.out.println("Pelicula creada :)");
+    private final Connection connection;
+
+    public MovieRepositoryImpl() {
+        this.connection = DatabaseConnection.getConnection();
+    }
+
+    @Override
+    public void create(Movie movie) {
+        String sql = "INSERT INTO movies (title, year, duration, genre, studio, rating, poster, synopsis) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, movie.getTitle());
+            stmt.setInt(2, movie.getYear());
+            stmt.setInt(3, movie.getDuration());
+            stmt.setString(4, movie.getGenre());
+            stmt.setString(5, movie.getStudio());
+            stmt.setDouble(6, movie.getRating());
+            stmt.setString(7, movie.getPoster());
+            stmt.setString(8, movie.getSynopsis());
+            stmt.executeUpdate();
+            System.out.println("✅ Película guardada en la base de datos.");
         } catch (SQLException e) {
-            System.out.println("Error create: " + e.getMessage());
+            System.err.println("❌ Error al insertar película: " + e.getMessage());
         }
     }
 
+    @Override
     public List<Movie> findAll() {
-        List<Movie> list = new ArrayList<>();
-        try {
-            Statement st = DatabaseConnection.getConnection().createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM movies");
-            while (rs.next()) list.add(mapRow(rs));
+        List<Movie> movies = new ArrayList<>();
+        String sql = "SELECT * FROM movies";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                movies.add(mapResultSetToMovie(rs));
+            }
         } catch (SQLException e) {
-            System.out.println("Error findAll: " + e.getMessage());
+            System.err.println("❌ Error al leer películas: " + e.getMessage());
         }
-        return list;
+        return movies;
     }
 
+    @Override
     public Movie findById(int id) {
-        try {
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM movies WHERE id=?");
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) return mapRow(rs);
+        String sql = "SELECT * FROM movies WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapResultSetToMovie(rs);
+            }
         } catch (SQLException e) {
-            System.out.println("Error findById: " + e.getMessage());
+            System.err.println("❌ Error al buscar película por ID: " + e.getMessage());
         }
         return null;
     }
 
-    private Movie mapRow(ResultSet rs) throws SQLException {
+    private Movie mapResultSetToMovie(ResultSet rs) throws SQLException {
         return new Movie(
                 rs.getInt("id"),
                 rs.getString("title"),
