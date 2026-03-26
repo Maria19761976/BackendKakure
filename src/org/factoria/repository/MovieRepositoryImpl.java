@@ -1,4 +1,3 @@
-
 package org.factoria.repository;
 
 import org.factoria.config.DatabaseConnection;
@@ -17,7 +16,7 @@ public class MovieRepositoryImpl implements MovieRepository {
     }
 
     @Override
-    public void create(Movie movie) {
+    public void save(Movie movie) {
         String sql = "INSERT INTO movies (title, year, duration, genre, studio, rating, poster, synopsis) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -64,6 +63,38 @@ public class MovieRepositoryImpl implements MovieRepository {
             System.err.println("❌ Error searching movie by ID: " + e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public void update(Movie movie) {
+        String sql = "UPDATE movies SET title=?, year=?, duration=?, genre=?, studio=?, rating=?, poster=?, synopsis=? WHERE id=?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, movie.getTitle());
+            stmt.setInt(2, movie.getYear());
+            stmt.setInt(3, movie.getDuration());
+            stmt.setString(4, movie.getGenre());
+            stmt.setString(5, movie.getStudio());
+            stmt.setDouble(6, movie.getRating());
+            stmt.setString(7, movie.getPoster());
+            stmt.setString(8, movie.getSynopsis());
+            stmt.setInt(9, movie.getId());
+            stmt.executeUpdate();
+            System.out.println("✅ Movie updated in the database.");
+        } catch (SQLException e) {
+            System.err.println("❌ Error updating movie: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void delete(int id) {
+        String sql = "DELETE FROM movies WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            System.out.println("✅ Movie deleted from the database.");
+        } catch (SQLException e) {
+            System.err.println("❌ Error deleting movie: " + e.getMessage());
+        }
     }
 
     private Movie mapResultSetToMovie(ResultSet rs) throws SQLException {
